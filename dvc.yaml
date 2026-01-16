@@ -1,0 +1,25 @@
+stages:
+  validate:
+    cmd: python src/validate.py
+    deps:
+      - data/winequality-red.csv
+      - src/validate.py
+    outs:
+      - logs/pipeline.log
+
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+      - data/winequality-red.csv
+      - src/preprocess.py
+    outs:
+      - data/processed_data.pkl
+      - data/scaler.pkl
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - data/processed_data.pkl
+      - src/train.py
+    outs:
+      - model.pkl
