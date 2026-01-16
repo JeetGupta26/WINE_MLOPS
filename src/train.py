@@ -1,47 +1,32 @@
 import joblib
 import mlflow
-import logging
-import sys
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
-logging.basicConfig(
-    filename="logs/pipeline.log",
-    level=logging.ERROR
+# Load processed data
+X_train, X_test, y_train, y_test = joblib.load("data/processed_data.pkl")
+
+# Start MLflow run
+mlflow.start_run()
+
+model = RandomForestRegressor(
+    n_estimators=100,
+    random_state=42
 )
 
-try:
-    # Load processed data
-    X_train, X_test, y_train, y_test = joblib.load("data/processed_data.pkl")
+model.fit(X_train, y_train)
 
-    mlflow.start_run()
+predictions = model.predict(X_test)
+rmse = mean_squared_error(y_test, predictions, squared=False)
 
-    model = RandomForestRegressor(
-        n_estimators=100,
-        random_state=42
-    )
+# Log to MLflow
+mlflow.log_param("model", "RandomForestRegressor")
+mlflow.log_metric("rmse", rmse)
+mlflow.sklearn.log_model(model, "model")
 
-    model.fit(X_train, y_train)
+# Save model
+joblib.dump(model, "model.pkl")
 
-    predictions = model.predict(X_test)
-    rmse = mean_squared_error(y_test, predictions, squared=False)
+print(f"✅ Model trained successfully | RMSE: {rmse}")
 
-    # Log to MLflow
-    mlflow.log_param("model", "RandomForestRegressor")
-    mlflow.log_metric("rmse", rmse)
-    mlflow.sklearn.log_model(model, "model")
-
-    # Save model
-    joblib.dump(model, "model.pkl")
-
-    print(f"✅ Model trained successfully | RMSE: {rmse}")
-
-    mlflow.end_run()
-
-except Exception as e:
-    logging.error(f"Training failed: {e}")
-    print("❌ Pipeline stopped safely")
-    sys.exit(1)
-
-# ✅ SUCCESS
-sys.exit(0)
+mlflow.end_run()
