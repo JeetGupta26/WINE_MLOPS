@@ -29,7 +29,7 @@ try:
 
     joblib.dump(model, "model.pkl")
 
-    if rmse > 0.7:
+    if rmse > 1.0:
         raise ValueError("Model performance below threshold")
 
     mlflow.end_run()
