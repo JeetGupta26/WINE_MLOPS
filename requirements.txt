@@ -2,6 +2,6 @@ pandas
 numpy
 scikit-learn
 mlflow
-great-expectations
 flask
 joblib
+dvc
