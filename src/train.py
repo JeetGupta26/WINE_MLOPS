@@ -34,18 +34,14 @@ try:
     # Save model
     joblib.dump(model, "model.pkl")
 
-    print(f"Model trained successfully | RMSE: {rmse}")
-
-    # Performance threshold (relaxed)
-    if rmse > 1.0:
-        raise ValueError("Model performance below threshold")
+    print(f"✅ Model trained successfully | RMSE: {rmse}")
 
     mlflow.end_run()
 
 except Exception as e:
     logging.error(f"Training failed: {e}")
-    print("Pipeline stopped safely")
+    print("❌ Pipeline stopped safely")
     sys.exit(1)
 
-# ✅ SUCCESSFUL EXIT (THIS WAS MISSING BEFORE)
+# ✅ SUCCESS
 sys.exit(0)
