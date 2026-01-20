@@ -3,6 +3,12 @@ import mlflow
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
+
+mlflow.set_tracking_uri("file:///C:/Users/LENOVO/wine-mlops/mlruns")
+mlflow.set_experiment("wine-quality-experiment")
+
+
+
 X_train, X_test, y_train, y_test = joblib.load("data/processed_data.pkl")
 
 mlflow.start_run()

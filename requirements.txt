@@ -5,3 +5,6 @@ mlflow
 flask
 joblib
 dvc
+os
+matplotlib
+seaborn
